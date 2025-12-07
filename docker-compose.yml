@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  app:
+    image: ${DOCKER_IMAGE}
+    container_name: tugas-sesi-10
+    ports:
+      - 3291:3291
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+
+    environment:
+      - DB_DSN=${DB_DSN}
