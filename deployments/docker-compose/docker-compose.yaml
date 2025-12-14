@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  app:
+    image: ${DOCKER_IMAGE}
+    container_name: tugas-sesi-10
+    ports:
+      - 3291:3291
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - DB_DSN=${DB_DSN}
+
+  envoy-dev:
+    image: envoyproxy/envoy:v1.31.0
+    container_name: envoy-dev
+    ports:
+      - "9901:9901" # admin
+      - "8989:8989" # listener
+    volumes:
+      - envoy-config:/etc/envoy:ro
+    restart: always
+    depends_on:
+      - app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9901/ready"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 25s
+
+volumes:
+  envoy-config:
+    external: true

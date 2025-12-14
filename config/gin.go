@@ -2,6 +2,7 @@ package config
 
 import (
 	"net/http"
+	"tugas-sesi-10-arsitektur-berbasis-layanan/internal/v1/delivery/http/middleware"
 	"tugas-sesi-10-arsitektur-berbasis-layanan/pkg/common"
 
 	"github.com/gin-contrib/cors"
@@ -25,10 +26,16 @@ func NewEngine() *gin.Engine {
 	}
 
 	router := gin.Default()
+	router.Use(middleware.XSSMiddleware())
 	router.MaxMultipartMemory = 2 << 30
 	router.ForwardedByClientIP = true
 	router.RemoteIPHeaders = []string{"X-Forwarded-For", "X-Real-IP"}
 	router.Use(cors.New(configCors))
+	router.GET("/health", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"status": "ok",
+		})
+	})
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, common.WebResponse{
 			Code:    http.StatusNotFound,

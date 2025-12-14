@@ -2,7 +2,7 @@ package app
 
 import (
 	"tugas-sesi-10-arsitektur-berbasis-layanan/internal/v1/app/wire"
-	route "tugas-sesi-10-arsitektur-berbasis-layanan/internal/v1/delivery"
+	route "tugas-sesi-10-arsitektur-berbasis-layanan/internal/v1/delivery/http/route"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
